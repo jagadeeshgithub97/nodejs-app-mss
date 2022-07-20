@@ -1,0 +1,26 @@
+node{
+    stage('checkout code'){
+        git credentialsId: 'ce662954-cca8-4a94-8665-9b3f13e616c4', url: 'https://github.com/jagadeeshgithub97/nodejs-app-mss.git'
+    }
+    stage('Build'){ 
+        nodejs(nodeJSInstallationName: 'nodejs18.6.0')
+        {
+            sh "npm install"
+    }
+        
+    }
+    stage('SonarQube Report execute'){
+        nodejs(nodeJSInstallationName: 'nodejs18.6.0')
+    {
+        sh "npm run sonar"
+    }
+    }
+    stage('uodate into nexus'){
+        sh "npm publish"
+    }
+    stage('Run the Nodejs application'){
+        sh "npm start &"
+    }
+    
+    
+} //node ending
